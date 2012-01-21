@@ -1,0 +1,12 @@
+Steps to create a new Subsystem
+
+1. write "extends SubSystem" before 1st bracket
+2. click light bulb, select 1st option "Implement all abstract methods"
+3. click Ctrl+Space after bracket, select 1st option (ends with "generate")
+4. create new line after the bracket on the ID() function, write 'return "";', in quotes write formal class name
+
+----!!-Proceed only with permission-!!----
+
+5. in the correct Mode add a variable SubSystem variable to the end of the file with a unique relevant name
+6. in the runOnce() function assign the new SubSystem variable to a new instance to your SubSystem with the parameters "tr"
+7. in any function (usually execute()) write the new SubSystem variable with ".execute(null);", a parameter may replace null if necessary

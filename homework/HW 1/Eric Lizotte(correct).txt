@@ -1,0 +1,19 @@
+
+
+
+
+
+public class Main {
+    String array1[] = {"s1", "s2", "s3", "s4", "s5", "s6", "s7"};
+    
+    public static void main(String[] args) {
+        for(int x=0; x<array1.length; x++){
+		System.out.println(array1[x]);    
+	}        
+
+	for(int x=array1.length-1; x>=0; x--){
+	       System.out.println(array1[x]);     
+	}      
+    }
+}
+
