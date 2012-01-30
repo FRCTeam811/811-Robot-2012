@@ -29,6 +29,8 @@ public class OperatorControl extends Mode {
     public void runOnce() {
         drivetrain = new DriveTrain(tr);
         visionss = new VisionSS(tr);
+        shooter = new Shooter(tr);
+        gatherer = new Gathering(tr);
     }
     
     /**  
@@ -42,9 +44,11 @@ public class OperatorControl extends Mode {
      * Runs continuously while operator control is enabled
      */
     public void execute() {
-        System.out.println("Executing Operator Control");
+        //System.out.println("Executing Operator Control");
         //drivetrain.execute(null);
-        visionss.logic(null);
+        visionss.execute(null);
+        shooter.execute(null);
+        
     }
     
     /**
@@ -56,4 +60,6 @@ public class OperatorControl extends Mode {
     
     SubSystem drivetrain;
     SubSystem visionss;
+    SubSystem shooter;
+    SubSystem gatherer;
 }

@@ -6,8 +6,6 @@ package edu.wpi.first.team811.subsystems;
 
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 
 /**
  *
@@ -22,9 +20,10 @@ public class VisionSS extends SubSystem {
     public String ID() {
         return "VisionSS";
     }
-
+    
     public void logic(Object param) {
         d.ac.freshImage();
         d.rd1.arcadeDrive((0.75) * d.joy1.getY(), 0.75 * d.joy1.getThrottle(), true);
+        d.turret.set(d.joy1.getRawAxis(3));
     }
 }

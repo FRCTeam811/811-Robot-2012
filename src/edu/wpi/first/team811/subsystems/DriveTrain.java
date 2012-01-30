@@ -41,7 +41,8 @@ public class DriveTrain extends SubSystem {
     }
 
     public void logic(Object param) {
-        d.rd1.arcadeDrive(d.joy1.getY(GenericHID.Hand.kLeft), d.joy1.getX(GenericHID.Hand.kRight));
+        d.rd1.arcadeDrive(d.joy1);
+      //  d.rd1.arcadeDrive(d.joy1.getY(GenericHID.Hand.kLeft), d.joy1.getX(GenericHID.Hand.kRight));
     }
 
 
