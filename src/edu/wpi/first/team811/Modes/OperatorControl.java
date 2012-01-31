@@ -27,10 +27,8 @@ public class OperatorControl extends Mode {
      * Runs when robot is started
      */
     public void runOnce() {
-        drivetrain = new DriveTrain(tr);
         visionss = new VisionSS(tr);
         shooter = new Shooter(tr);
-        gatherer = new Gathering(tr);
     }
     
     /**  
