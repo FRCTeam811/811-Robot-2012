@@ -6,10 +6,13 @@ package edu.wpi.first.team811.Modes;
 
 /**
  *
- * @author David
+ * @author David Grossman
+ * last updated February 4, 2012
  */
 import edu.wpi.first.team811.Mode;
 import edu.wpi.first.team811.Team811Robot;
+import edu.wpi.first.team811.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Kinect;
 import edu.wpi.first.wpilibj.KinectStick;
 import edu.wpi.first.wpilibj.Skeleton;
@@ -25,6 +28,22 @@ public class Hybrid extends Mode{
     Kinect kinect;
     KinectStick kStick;
     Skeleton sk;
+    
+    /*
+     *  1) Head to the Right
+        2) Head to the Left
+        3) Right leg out to the right
+        4) Left Leg out to the left
+        5) Right Leg Forward
+        6) Right Leg Back
+        7) Left Leg Forward
+        8) Left Leg Back
+     */
+    final static int HEADTORIGHT = 1;
+    final static int HEADTOLEFT = 2;
+    final static int RIGHTLEGTOTHERIGHT = 3;
+    final static int LEFTLEGTOTHELEFT = 4;
+    final static int RIGHTLEGFORWARD = 1;
 
     public void runOnce() {
         
@@ -39,11 +58,26 @@ public class Hybrid extends Mode{
 
     public void execute() {
         while(true){
-          // kStick.
+            d.rd1.tankDrive(kStick.getY(Hand.kLeft) * (0.25), kStick.getY(Hand.kRight) * (0.25));
+            if(kStick.getRawButton(RIGHTLEGTOTHERIGHT))
+                shoot();
+            if(kStick.getRawButton(HEADTOLEFT))
+                bridgeArmDown();
+            if(kStick.getRawButton(HEADTORIGHT))
+                bridgeArmUp();
         }
     }
 
     public void disable() {
+    }
+
+    private void shoot() {
+    }
+
+    private void bridgeArmDown() {
+    }
+
+    private void bridgeArmUp() {
     }
     
 }

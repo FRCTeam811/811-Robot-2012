@@ -6,6 +6,7 @@ package edu.wpi.first.team811.subsystems;
 
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
+import edu.wpi.first.wpilibj.Relay.Value;
 
 /**
  *
@@ -14,6 +15,9 @@ import edu.wpi.first.team811.Team811Robot;
 public class Gathering extends SubSystem {
     //
     boolean lastState = false;
+    
+    final static double gathererOn = 1.0;
+    final static double gathererOff = -1.0;
 
     public Gathering(Team811Robot teamrobot) {
         super(teamrobot);
@@ -28,9 +32,20 @@ public class Gathering extends SubSystem {
     
     public void logic(Object param) {
         
-        if (reachedCapacity()) {
+        if (d.joy1.getRawAxis(c.gathererInput) == gathererOn) {
+            if (reachedCapacity()) {
+                stopConveyorBelt();
+            }
+            else {
+                startConveyorBelt();
+            }
+            
+        }
+        else if (d.joy1.getRawAxis(c.gathererInput) == gathererOff){
             stopConveyorBelt();
         }
+        
+        
         
         //gets the current state of the limitswitch
         get[index] = d.gathererBottom.get();
@@ -44,15 +59,16 @@ public class Gathering extends SubSystem {
                     numberOfTrues++;
                 }
             }
+            boolean containsABall = (numberOfTrues>=9);
             
-            if ((numberOfTrues>=9) != lastState) {//looks at boolean lastState 
-                if (numberOfTrues>=9) {
+            if (containsABall != lastState) {//looks at boolean lastState 
+                if (containsABall) {
                     c.ballCount++;
                     //see if "get" is not equal to lastState boolean
                     // if not then add 1 to ballcount 
                 }
-                lastState = (numberOfTrues>=9);
-        }
+                lastState = containsABall;
+            }
         
         }
         
@@ -69,10 +85,10 @@ public class Gathering extends SubSystem {
         c.ballCount--;
     }
     public void startConveyorBelt() {
-        d.conveyorBelt.set(1.0) ;
+        d.conveyorBelt.set(Value.kOn) ;
     }
     public void stopConveyorBelt() {
-        d.conveyorBelt.set(0.0);
+        d.conveyorBelt.set(Value.kOff);
     }
     public void moveConveyorBelt() {
         if (c.ballCount < 3) {

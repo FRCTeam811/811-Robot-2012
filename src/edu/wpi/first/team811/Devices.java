@@ -18,20 +18,20 @@ public class Devices {
     ///Variables Start
     public AxisCamera ac;///<<<MANUALLY EDITED>>>
     public DigitalInput gathererBottom;///limitswitch that counts the balls.
-    public Jaguar gatheringMotor;///
-    public Jaguar jag1;///
-    public Victor bridgeArm;///
+    public Jaguar leftDriveJag;///
+    public Relay bridgeArm;///
     public DigitalInput armBottom;///
     public DigitalInput armTop;///
     public DigitalInput gathererTop;///
-    public Jaguar jag2;///
-    public Jaguar bridgeArmJag;///
+    public Jaguar rightDriveJag;///
+    public Encoder shooterEncoder;///
+    public Jaguar shooter;///This represents the 2 Jaguars that are wired together. They are always set to the same speed
     public Jaguar shooter2;
-    public Jaguar shooter;///
-    public Victor turret;
+    public Relay feeder;///Determines whether it goes forward or backwards.
+    public Victor turret;///
     public Joystick joy1;///
     public Joystick joy2;///
-    public Jaguar conveyorBelt;///
+    public Relay conveyorBelt;///
     public RobotDrive rd1;///<<<MANUALLY EDITED>>>
     public Gyro gyro;///
     public Vision vision;///<<<MANUALLY EDITED>>>
@@ -41,22 +41,22 @@ public class Devices {
         
         ///Variables Set Start
         ac = AxisCamera.getInstance();
-        gatheringMotor = new Jaguar(5);
-        jag1 = new Jaguar(1);
-        jag2 = new Jaguar(2);
-        bridgeArmJag = new Jaguar(3);
-        bridgeArm = new Victor(4);
-        armBottom = new DigitalInput(8);
-        armTop = new DigitalInput(9);
-        gathererBottom = new DigitalInput(1);
-        gathererTop = new DigitalInput(2);
-        shooter = new Jaguar(7);
-        shooter2 = new Jaguar(8);
-        turret = new Victor(9);
+        leftDriveJag = new Jaguar(1);
+        rightDriveJag = new Jaguar(2);
+        bridgeArm = new Relay(2);
+        armBottom = new DigitalInput(6);
+        armTop = new DigitalInput(5);
+        gathererBottom = new DigitalInput(4);
+        gathererTop = new DigitalInput(3);
+        shooterEncoder = new Encoder(1, 2);
+        shooter = new Jaguar(3);
+        shooter2 = new Jaguar(10);
+        feeder = new Relay(3);
+        turret = new Victor(4);
         joy1 = new Joystick(1);
         joy2 = new Joystick(2);
-        conveyorBelt = new Jaguar(6);
-        rd1 = new RobotDrive(jag1,jag2);
+        conveyorBelt = new Relay(1);
+        rd1 = new RobotDrive(leftDriveJag,rightDriveJag);
         gyro = new Gyro(1);
         vision = new Vision();
         ///Variables Set End

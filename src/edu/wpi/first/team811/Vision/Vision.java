@@ -5,7 +5,7 @@
 package edu.wpi.first.team811.Vision;
 
 import edu.wpi.first.wpilibj.camera.AxisCamera;
-import edu.wpi.first.wpilibj.networktables.NetworkListener;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.networktables.NetworkTableKeyNotDefined;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,21 +16,51 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Vision {
 
     AxisCamera ac;
-    int screenX = 240;
-    int screenY = 190;
+    NetworkTable cameraTable = null;
+    public double xOffset = 0;
+    public double height = 0;
+    public double width = 0;
+    int count = 0;
+    int dashID = 0;
+    public boolean nData = false;//was data updated tracker
 
     public Vision() {
         ac = AxisCamera.getInstance();
 
     }
-    
-    public int getXOffset() throws NetworkTableKeyNotDefined {
-        Point center = getParallelogram().center;
-        return center.x - screenX;
-    }
 
-    private Parallelogram getParallelogram() throws NetworkTableKeyNotDefined {
-        return (Parallelogram)SmartDashboard.getData("camera").getTable().getValue("rect");
+    public void update() {
+        //if (cameraTable == null) {
+            //cameraTable = SmartDashboard;
+        //}
+
+        //cameraTable.beginTransaction();
+        //int tcount = SmartDashboard.getInt("count", 0);
+        double txOffset = SmartDashboard.getDouble("xOffset", 0);
+        double theight = SmartDashboard.getDouble("height", 0);
+        double twidth = SmartDashboard.getDouble("width", 0);
+        //int tdashID = SmartDashboard.getInt("dashID", dashID);
+        //cameraTable.endTransaction();
+
+        /*if (tdashID != dashID) {
+            count = 0;
+            dashID = tdashID;
+        }
+
+        if (tcount > count) {
+            count = tcount;
+            nData = true;
+        } else {
+            nData = false;
+            return;
+        }*/
+        System.out.println(txOffset);
         
+        xOffset = txOffset;
+        height = theight;
+        width = twidth;
     }
+    //private Parallelogram getParallelogram() throws NetworkTableKeyNotDefined {
+    //return (Parallelogram)SmartDashboard.getData("camera").getTable();
+    //}
 }

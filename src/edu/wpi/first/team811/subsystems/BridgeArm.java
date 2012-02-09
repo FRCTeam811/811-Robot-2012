@@ -8,6 +8,7 @@ package edu.wpi.first.team811.subsystems;
 
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
+import edu.wpi.first.wpilibj.Relay;
 
 /**
  *
@@ -26,24 +27,28 @@ public class BridgeArm extends SubSystem {
     public void logic(Object param) {
         if (d.joy1.getRawButton(c.armDown)) {
             armDown();
-        }
-        
-        if (d.joy1.getRawButton(c.armUp)) {
+        } else if (d.joy1.getRawButton(c.armUp)) {
             armUp();
+        } else {
+            d.bridgeArm.set(Relay.Value.kOff);
         }
     }
-    //if button B is pressed, arm moves down(If the bottom limit switch is false)
-    //if button A is pressed, arm moves up(If the top limit switch is false)
+    //if armDown is pressed, arm moves down(If the bottom limit switch is false)
+    //if armUp is pressed, arm moves up(If the top limit switch is false)
 
     public void armDown() {
         if (d.armBottom.get() == false) {
-            d.bridgeArm.set(-1.0);
+            d.bridgeArm.set(Relay.Value.kReverse);
+        } else{
+            d.bridgeArm.set(Relay.Value.kOff);
         }
     }
 
     public void armUp() {
         if (d.armTop.get() == false) {
-            d.bridgeArm.set(1.0);
+            d.bridgeArm.set(Relay.Value.kForward);
+        } else{
+            d.bridgeArm.set(Relay.Value.kOff);
         }
     }
 }

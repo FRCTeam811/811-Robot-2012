@@ -23,7 +23,7 @@ public class VisionSS extends SubSystem {
     
     public void logic(Object param) {
         d.ac.freshImage();
-        d.rd1.arcadeDrive((0.75) * d.joy1.getY(), 0.75 * d.joy1.getThrottle(), true);
-        d.turret.set(d.joy1.getRawAxis(3));
+        //d.rd1.arcadeDrive((0.75) * d.joy1.getY(), 0.75 * d.joy1.getThrottle(), true);
+        //d.turret.set(d.joy1.getRawAxis(3));
     }
 }

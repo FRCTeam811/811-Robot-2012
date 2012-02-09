@@ -8,7 +8,7 @@ package edu.wpi.first.team811;
  *
  * @author Saswat
  */
-public class Configuration {
+public class Constants {
     ///Variables Start
     public int ballCount = 0;///
     public int feederOn = 0;///This will switch on and off the feeder. By default it is off. 

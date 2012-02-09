@@ -27,7 +27,7 @@ public class OperatorControl extends Mode {
      * Runs when robot is started
      */
     public void runOnce() {
-        visionss = new VisionSS(tr);
+        //visionss = new VisionSS(tr);
         shooter = new Shooter(tr);
     }
     
@@ -44,7 +44,7 @@ public class OperatorControl extends Mode {
     public void execute() {
         //System.out.println("Executing Operator Control");
         //drivetrain.execute(null);
-        visionss.execute(null);
+        //visionss.execute(null);
         shooter.execute(null);
         
     }
