@@ -8,9 +8,10 @@ package edu.wpi.first.team811.subsystems;
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
 import edu.wpi.first.wpilibj.Relay.Value;
+
 /**
  *
- * @author elisha
+ * @author Elisha
  */
 public class Feeder extends SubSystem {
 
@@ -23,12 +24,13 @@ public class Feeder extends SubSystem {
     }
 
     public void logic(Object param) {
-        if (c.feederOn == 1){
-          d.feeder.set(Value.kForward);
+        
+        ///TODO revert to feederOn
+        if (d.joy1.getRawButton(c.feederStart)) {
+            d.feeder.set(Value.kReverse);
+        } 
+        if (d.joy1.getRawButton(c.feederStop)){
+            d.feeder.set(Value.kOff);
         }
-        else {
-          d.feeder.set(Value.kOff);
     }
-
-       }
-    }
+}

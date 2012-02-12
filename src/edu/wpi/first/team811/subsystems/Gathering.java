@@ -9,15 +9,16 @@ import edu.wpi.first.team811.Team811Robot;
 import edu.wpi.first.wpilibj.Relay.Value;
 
 /**
+ * Controls the conveyer belt
+ *
+ * Progress - 100% Status - Reviewed, Ready for robot
  *
  * @author David
  */
 public class Gathering extends SubSystem {
-    //
-    boolean lastState = false;
-    
-    final static double gathererOn = 1.0;
-    final static double gathererOff = -1.0;
+
+    boolean ballCounted = false;
+    boolean[] states = new boolean[4];
 
     public Gathering(Team811Robot teamrobot) {
         super(teamrobot);
@@ -27,90 +28,36 @@ public class Gathering extends SubSystem {
         return "Gathering";
     }
 
-    static boolean[] get = new boolean[10];
-    static int index = 0;
-    
     public void logic(Object param) {
-        
-        if (d.joy1.getRawAxis(c.gathererInput) == gathererOn) {
-            if (reachedCapacity()) {
-                stopConveyorBelt();
-            }
-            else {
-                startConveyorBelt();
-            }
-            
+
+        if ((c.stickyGatherer || Math.abs(d.joy1.getRawAxis(c.gathererInput)) > .1) && c.ballCount < 3) {//See if sticky gatherer is enabled, D-Pad is pressed and capacity is not reached
+            d.conveyorBelt.set(Value.kReverse);//Start Conveyer Belt
+        } else {
+            d.conveyorBelt.set(Value.kOff);//Stop Conveyer Belt
         }
-        else if (d.joy1.getRawAxis(c.gathererInput) == gathererOff){
-            stopConveyorBelt();
-        }
-        
-        
-        
-        //gets the current state of the limitswitch
-        get[index] = d.gathererBottom.get();
-        index++;
-        
-        if (index==10) {
-            int numberOfTrues = 0;
-            index = 0;
-            for (int i = 0; i < get.length; i++) {
-                if (get[i]) {
-                    numberOfTrues++;
-                }
+
+        boolean cState = d.gathererBottom.get();//get ball counter limit switch
+        states = add2Array(states, cState);//add latest limit switch value
+
+        if (ballCounted) {
+           if (!states[0] && !states[1] && !states[2] && !states[3]) {
+                ballCounted = false;//check if the ball is out
             }
-            boolean containsABall = (numberOfTrues>=9);
-            
-            if (containsABall != lastState) {//looks at boolean lastState 
-                if (containsABall) {
-                    c.ballCount++;
-                    //see if "get" is not equal to lastState boolean
-                    // if not then add 1 to ballcount 
-                }
-                lastState = containsABall;
+        } else {
+            if (states[0] && states[1] && states[2] && states[3]) {//check if the ball is in
+                ballCounted = true; 
+                c.ballCount++;
             }
-        
         }
-        
     }
-    
-    public boolean reachedCapacity() {
-        if (c.ballCount < 3){
-            return false; 
-        }
-        else 
-            return true;
-    }
-    public void ballCountMinusOne() {
-        c.ballCount--;
-    }
-    public void startConveyorBelt() {
-        d.conveyorBelt.set(Value.kOn) ;
-    }
-    public void stopConveyorBelt() {
-        d.conveyorBelt.set(Value.kOff);
-    }
-    public void moveConveyorBelt() {
-        if (c.ballCount < 3) {
-            startConveyorBelt();
-        } 
-        else stopConveyorBelt();
-    }
-    public boolean isBallAtTop(){
-        if (d.gathererTop.get())
-            return true;
-        else 
-            return false;
+
+    public boolean[] add2Array(boolean[] array, boolean data) {
+
+        array[3] = array[2];
+        array[2] = array[1];
+        array[1] = array[0];
+        array[0] = data;
+
+        return array;
     }
 }
-    
-   
-        
-    
-    
-            
-                
-    /*
-     * move it up and down limit for getting balls stop at three
-     *
-     */

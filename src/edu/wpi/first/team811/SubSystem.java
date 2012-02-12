@@ -68,7 +68,7 @@ public abstract class SubSystem {
      * @param text String to print
      */
     public void debug2dashboard(String text) {
-        SmartDashboard.log(text, ID());
+        SmartDashboard.putString(ID(), text);
     }
 
     /**
@@ -99,6 +99,7 @@ public abstract class SubSystem {
      */
     public void execute(Object param) {
         if (!isWaiting()) {
+            c = tr.config;
             logic(param);
         }
     }
@@ -111,6 +112,7 @@ public abstract class SubSystem {
      */
     public void execute(int number, Object param) {
         if (!isWaiting()) {
+            c = tr.config;
             switch (number) {
                 case 1:
                     logic1(param);

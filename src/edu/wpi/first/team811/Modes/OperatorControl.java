@@ -4,7 +4,9 @@
  */
 package edu.wpi.first.team811.Modes;
 
-import edu.wpi.first.team811.*;
+import edu.wpi.first.team811.Mode;
+import edu.wpi.first.team811.SubSystem;
+import edu.wpi.first.team811.Team811Robot;
 import edu.wpi.first.team811.subsystems.*;
 
 /**
@@ -27,8 +29,16 @@ public class OperatorControl extends Mode {
      * Runs when robot is started
      */
     public void runOnce() {
-        //visionss = new VisionSS(tr);
-        shooter = new Shooter(tr);
+        
+        /*  shooter
+         * feeder wheel
+         * gatherer
+         */
+        bridgeArm = new BridgeArm(tr);
+        drivetrain = new DriveTrain(tr);
+        gatherer = new Gathering(tr);
+        feeder = new Feeder(tr);//TODO disable debug feeder
+        shooter = new ShooterDebug(tr);//TODO stop using Shooter Debug
     }
     
     /**  
@@ -42,11 +52,11 @@ public class OperatorControl extends Mode {
      * Runs continuously while operator control is enabled
      */
     public void execute() {
-        //System.out.println("Executing Operator Control");
-        //drivetrain.execute(null);
-        //visionss.execute(null);
+        bridgeArm.execute(null);
+        drivetrain.execute(null);
+        feeder.execute(null);
+        gatherer.execute(null);
         shooter.execute(null);
-        
     }
     
     /**
@@ -56,8 +66,9 @@ public class OperatorControl extends Mode {
         
     }
     
+    SubSystem bridgeArm;
     SubSystem drivetrain;
-    SubSystem visionss;
-    SubSystem shooter;
+    SubSystem feeder;
     SubSystem gatherer;
+    SubSystem shooter;
 }
