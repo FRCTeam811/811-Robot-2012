@@ -29,16 +29,11 @@ public class OperatorControl extends Mode {
      * Runs when robot is started
      */
     public void runOnce() {
-        
-        /*  shooter
-         * feeder wheel
-         * gatherer
-         */
         bridgeArm = new BridgeArm(tr);
         drivetrain = new DriveTrain(tr);
         gatherer = new Gathering(tr);
-        feeder = new Feeder(tr);//TODO disable debug feeder
-        shooter = new ShooterDebug(tr);//TODO stop using Shooter Debug
+        feeder = new Feeder(tr);
+        shooter = new Shooter(tr);
     }
     
     /**  

@@ -31,12 +31,14 @@ public class Team811Robot extends SimpleRobot {
         config = new Configuration();
         op = new OperatorControl(this);
         auto = new Autonomous(this);
+        getWatchdog().setEnabled(true);
     }
     
     public void autonomous() {
         auto.done = false;
         auto.init();
         while (this.isAutonomous()) {
+            getWatchdog().feed();
             if (!auto.done) auto.execute();
         }
         if(isDisabled()) auto.disable();
@@ -46,6 +48,7 @@ public class Team811Robot extends SimpleRobot {
         op.done = false;
         op.init();
         while (this.isOperatorControl()) {
+            getWatchdog().feed();
             if (!op.done) op.execute();
         }
         if(isDisabled()) op.disable();

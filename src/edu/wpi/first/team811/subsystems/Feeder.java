@@ -7,6 +7,7 @@ package edu.wpi.first.team811.subsystems;
 
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 
 /**
@@ -25,12 +26,25 @@ public class Feeder extends SubSystem {
 
     public void logic(Object param) {
         
-        ///TODO revert to feederOn
-        if (d.joy1.getRawButton(c.feederStart)) {
-            d.feeder.set(Value.kReverse);
+        if(d.joy2.getRawAxis(c.feeder) < .5) {
+            c.feederOn = true;
         } 
-        if (d.joy1.getRawButton(c.feederStop)){
-            d.feeder.set(Value.kOff);
+        if(d.joy2.getRawAxis(c.feeder) > -.5) {
+            c.feederOn = false;
         }
+        
+        if(c.feederOn) {
+            d.feeder.set(Relay.Value.kReverse);
+        } else {
+             d.feeder.set(Relay.Value.kOff);
+        }
+        
+        
+//        if (d.joy1.getRawButton(c.feederStart)) {
+//            d.feeder.set(Value.kReverse);
+//        } 
+//        if (d.joy1.getRawButton(c.feederStop)){
+//            d.feeder.set(Value.kOff);
+//        }
     }
 }

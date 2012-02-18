@@ -19,6 +19,7 @@ public class Gathering extends SubSystem {
 
     boolean ballCounted = false;
     boolean[] states = new boolean[4];
+    
 
     public Gathering(Team811Robot teamrobot) {
         super(teamrobot);
@@ -29,35 +30,46 @@ public class Gathering extends SubSystem {
     }
 
     public void logic(Object param) {
-
-        if ((c.stickyGatherer || Math.abs(d.joy1.getRawAxis(c.gathererInput)) > .1) && c.ballCount < 3) {//See if sticky gatherer is enabled, D-Pad is pressed and capacity is not reached
+        
+        if(d.joy2.getRawAxis(6) > 0 || d.joy1.getRawAxis(3) < 0) {
+            c.gathererOn = true;
+        }
+        if(d.joy2.getRawAxis(6) < 0 || d.joy1.getRawButton(1)) {
+            c.gathererOn = false;
+        }
+        
+        if(d.joy1.getRawAxis(3) > 0) {
+            d.conveyorBelt.set(Value.kForward);
+        
+        //if (Math.abs(d.joy1.getRawAxis(c.gathererInput)) > .1) {//See if sticky gatherer is enabled, D-Pad is pressed and capacity is not reached
+        } else if(c.gathererOn) {
             d.conveyorBelt.set(Value.kReverse);//Start Conveyer Belt
         } else {
             d.conveyorBelt.set(Value.kOff);//Stop Conveyer Belt
         }
 
-        boolean cState = d.gathererBottom.get();//get ball counter limit switch
-        states = add2Array(states, cState);//add latest limit switch value
-
-        if (ballCounted) {
-           if (!states[0] && !states[1] && !states[2] && !states[3]) {
-                ballCounted = false;//check if the ball is out
-            }
-        } else {
-            if (states[0] && states[1] && states[2] && states[3]) {//check if the ball is in
-                ballCounted = true; 
-                c.ballCount++;
-            }
-        }
+//        boolean cState = d.gathererBottom.get();//get ball counter limit switch
+//        states = add2Array(states, cState);//add latest limit switch value
+//
+//        if (ballCounted) {
+//           if (!states[0] && !states[1] && !states[2] && !states[3]) {
+//                ballCounted = false;//check if the ball is out
+//            }
+//        } else {
+//            if (states[0] && states[1] && states[2] && states[3]) {//check if the ball is in
+//                ballCounted = true; 
+//                c.ballCount++;
+//            }
+//        }
     }
 
-    public boolean[] add2Array(boolean[] array, boolean data) {
-
-        array[3] = array[2];
-        array[2] = array[1];
-        array[1] = array[0];
-        array[0] = data;
-
-        return array;
-    }
+//    public boolean[] add2Array(boolean[] array, boolean data) {
+//
+//        array[3] = array[2];
+//        array[2] = array[1];
+//        array[1] = array[0];
+//        array[0] = data;
+//
+//        return array;
+//    }
 }

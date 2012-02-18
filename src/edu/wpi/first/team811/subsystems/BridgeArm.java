@@ -24,32 +24,32 @@ public class BridgeArm extends SubSystem {
     }
 
     public void logic(Object param) {
-        if (d.joy1.getRawButton(c.armDown)) {
+        if (d.joy1.getRawButton(c.bridgeArmDown)) {
             armDown();
             debug2dashboard("down");
-        } else if (d.joy1.getRawButton(c.armUp)) {
+        } else if (d.joy1.getRawButton(c.bridgeArmUp)) {
             armUp();
             debug2dashboard("up");
         } else {
-            //d.bridgeArm.set(0);
-            d.bridgeArm.set(Relay.Value.kOff);
+            d.bridgeArm.set(0);
+            //d.bridgeArm.set(Relay.Value.kOff);
             debug2dashboard("off");
         }
     }
     
     public void armDown() {//if armDown is pressed, arm moves down (If the bottom limit switch is false)
-        //if (d.armBottom.get() == false) {
-            //d.bridgeArm.set(-1.0);
-        d.bridgeArm.set(Relay.Value.kReverse);
-        //} else{
-        //    d.bridgeArm.set(0);
-        //}
+        if (d.armBottom.get()) {
+            d.bridgeArm.set(1.0);
+        //d.bridgeArm.set(Relay.Value.kReverse);
+        } else{
+            d.bridgeArm.set(0);
+        }
     }
 
     public void armUp() {//if armUp is pressed, arm moves up(If the top limit switch is false)
         //if (d.armTop.get() == false) {
-            //d.bridgeArm.set(1.0);
-        d.bridgeArm.set(Relay.Value.kForward);
+            d.bridgeArm.set(-1.0);
+        //d.bridgeArm.set(Relay.Value.kForward);
         //} else{
         //    d.bridgeArm.set(0);
         //}

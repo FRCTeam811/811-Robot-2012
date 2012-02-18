@@ -6,6 +6,7 @@ package edu.wpi.first.team811;
 
 import edu.wpi.first.team811.Vision.Vision;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 
 /**
@@ -19,7 +20,7 @@ public class Devices {
     public AxisCamera ac;///<<<MANUALLY EDITED>>>
     public DigitalInput gathererBottom;///limitswitch that counts the balls.
     public Jaguar leftDriveJag;///
-    public Relay bridgeArm;///
+    public Victor bridgeArm;///
     public DigitalInput armBottom;///
     public DigitalInput armTop;///
     public DigitalInput gathererTop;///
@@ -32,6 +33,7 @@ public class Devices {
     public Joystick joy2;///
     public Relay conveyorBelt;///gatherer
     public RobotDrive rd1;///<<<MANUALLY EDITED>>>
+    public DigitalInput turretLimit;///
     public Vision vision;///<<<MANUALLY EDITED>>>
     ///Variables End
 
@@ -39,22 +41,24 @@ public class Devices {
         
         ///Variables Set Start
         ac = AxisCamera.getInstance();
-        gathererBottom = new DigitalInput(4);
+        gathererBottom = new DigitalInput(7);
         leftDriveJag = new Jaguar(1);
-        bridgeArm = new Relay(5);
-        armBottom = new DigitalInput(6);
+        bridgeArm = new Victor(5);
+        armBottom = new DigitalInput(3);
         armTop = new DigitalInput(5);
-        gathererTop = new DigitalInput(3);
+        gathererTop = new DigitalInput(6);
         rightDriveJag = new Jaguar(2);
-        shooterEncoder = new Encoder(1, 2);
+        shooterEncoder = new Encoder(1, 13, 1, 14, true, EncodingType.k4X);
         shooter = new Jaguar(3);
         feeder = new Relay(4);
-        turret = new Victor(6);
+        turret = new Victor(4);
         joy1 = new Joystick(1);
         joy2 = new Joystick(2);
         conveyorBelt = new Relay(5);
         rd1 = new RobotDrive(leftDriveJag, rightDriveJag);
+        turretLimit = new DigitalInput(4);
         vision = new Vision();
         ///Variables Set End
+        conveyorBelt.setDirection(Relay.Direction.kBoth);
     }
 }

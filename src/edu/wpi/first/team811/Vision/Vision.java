@@ -22,7 +22,7 @@ public class Vision {
     public double width = 0;
     int count = 0;
     int dashID = 0;
-    public boolean nData = false;//was data updated tracker
+    public boolean nData = false;//was data updated tracker var
 
     public Vision() {
         ac = AxisCamera.getInstance();
@@ -42,6 +42,8 @@ public class Vision {
         //int tdashID = SmartDashboard.getInt("dashID", dashID);
         //cameraTable.endTransaction();
 
+        nData = true;//TODO remove and re-enable the safe delievery check
+        
         /*if (tdashID != dashID) {
             count = 0;
             dashID = tdashID;
