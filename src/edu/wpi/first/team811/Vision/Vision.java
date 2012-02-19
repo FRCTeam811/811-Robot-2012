@@ -26,43 +26,20 @@ public class Vision {
 
     public Vision() {
         ac = AxisCamera.getInstance();
-
     }
 
     public void update() {
-        //if (cameraTable == null) {
-            //cameraTable = SmartDashboard;
-        //}
-
-        //cameraTable.beginTransaction();
-        //int tcount = SmartDashboard.getInt("count", 0);
+        
         double txOffset = SmartDashboard.getDouble("xOffset", 0);
         double theight = SmartDashboard.getDouble("height", 0);
         double twidth = SmartDashboard.getDouble("width", 0);
-        //int tdashID = SmartDashboard.getInt("dashID", dashID);
-        //cameraTable.endTransaction();
 
-        nData = true;//TODO remove and re-enable the safe delievery check
+        nData = true;
         
-        /*if (tdashID != dashID) {
-            count = 0;
-            dashID = tdashID;
-        }
-
-        if (tcount > count) {
-            count = tcount;
-            nData = true;
-        } else {
-            nData = false;
-            return;
-        }*/
         System.out.println(txOffset);
         
         xOffset = txOffset;
         height = theight;
         width = twidth;
     }
-    //private Parallelogram getParallelogram() throws NetworkTableKeyNotDefined {
-    //return (Parallelogram)SmartDashboard.getData("camera").getTable();
-    //}
 }

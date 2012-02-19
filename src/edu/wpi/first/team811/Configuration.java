@@ -66,12 +66,14 @@ public class Configuration {
     //others
     public int visionErrorMargin = 5;///Margin of error allowed for vision
     public double robotDriveExpire = 5;///Time (seconds?) before the Robot Drive Device complains about the output not being updated Used By:Drive Train
-    public double[] heights1 =   {105, 65, 50};///greater
-    public double[] heights2 =   {95 , 50, 40};///less
-    public double[] speedsNew =  {.55, .85, .7};
-    public double[] speedsMedium={.6 , .9 , 1};
-    public double[] speedsOld =  {.6 , 1 ,  1};
-    public double[] encspeeds =  {0,  0 };
+    public double[] heights1 =  {105, 65 , 50};///greater
+    public double[] heights2 =  {95 , 50 , 40};///less
+    public double[] speedsNew = {.55, .85, .7};
+    public double[] speedsMed = {.6 , .9 , 1};
+    public double[] speedsOld = {.6 , 1 ,  1};
+    public double[] espeedNew = {0,  0 };
+    public double[] espeedMed = {0,  0 };
+    public double[] espeedOld = {0,  0 };
     public boolean gathererOn = false;
     public boolean feederOn = false;
 }

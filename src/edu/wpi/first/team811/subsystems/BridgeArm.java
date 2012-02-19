@@ -38,12 +38,11 @@ public class BridgeArm extends SubSystem {
     }
     
     public void armDown() {//if armDown is pressed, arm moves down (If the bottom limit switch is false)
-        if (d.armBottom.get()) {
+        //if (d.armBottom.get()) {//TODO uncomment me
             d.bridgeArm.set(1.0);
-        //d.bridgeArm.set(Relay.Value.kReverse);
-        } else{
-            d.bridgeArm.set(0);
-        }
+        //} else{
+        //    d.bridgeArm.set(0);
+        //}
     }
 
     public void armUp() {//if armUp is pressed, arm moves up(If the top limit switch is false)

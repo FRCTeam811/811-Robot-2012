@@ -38,13 +38,5 @@ public class Feeder extends SubSystem {
         } else {
              d.feeder.set(Relay.Value.kOff);
         }
-        
-        
-//        if (d.joy1.getRawButton(c.feederStart)) {
-//            d.feeder.set(Value.kReverse);
-//        } 
-//        if (d.joy1.getRawButton(c.feederStop)){
-//            d.feeder.set(Value.kOff);
-//        }
     }
 }

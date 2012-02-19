@@ -5,8 +5,8 @@
 package edu.wpi.first.team811;
 
 import edu.wpi.first.team811.Vision.Vision;
-import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 
 /**
@@ -31,7 +31,7 @@ public class Devices {
     public Victor turret;///
     public Joystick joy1;///
     public Joystick joy2;///
-    public Relay conveyorBelt;///gatherer
+    public Victor conveyorBelt;///gatherer
     public RobotDrive rd1;///<<<MANUALLY EDITED>>>
     public DigitalInput turretLimit;///
     public Vision vision;///<<<MANUALLY EDITED>>>
@@ -54,11 +54,10 @@ public class Devices {
         turret = new Victor(4);
         joy1 = new Joystick(1);
         joy2 = new Joystick(2);
-        conveyorBelt = new Relay(5);
+        conveyorBelt = new Victor(6);
         rd1 = new RobotDrive(leftDriveJag, rightDriveJag);
         turretLimit = new DigitalInput(4);
         vision = new Vision();
         ///Variables Set End
-        conveyorBelt.setDirection(Relay.Direction.kBoth);
     }
 }
