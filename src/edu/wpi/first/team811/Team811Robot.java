@@ -11,6 +11,7 @@ package edu.wpi.first.team811;
 import edu.wpi.first.team811.Modes.Autonomous;
 import edu.wpi.first.team811.Modes.OperatorControl;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -21,69 +22,55 @@ import edu.wpi.first.wpilibj.Timer;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Team811Robot extends SimpleRobot {
+public class Team811Robot extends IterativeRobot {
     
     public Devices devices;
     public Configuration config;
     private Mode op;
     private Mode auto;
-    DriverStation m_ds;
 
-    protected void robotInit() {
+    public void robotInit() {
         devices = new Devices();
         config = new Configuration();
         op = new OperatorControl(this);
         auto = new Autonomous(this);
-        m_ds = DriverStation.getInstance();
         getWatchdog().setEnabled(true);
     }
-    
-    public void autonomous() {
+
+    public void autonomousInit() {
         auto.done = false;
         auto.init();
-        while (this.isAutonomous()) {
-            getWatchdog().feed();
-            if (!auto.done) auto.execute();
-        }
-        if(isDisabled()) auto.disable();
-        
     }
 
-    public void operatorControl() {
-        op.done = false;
-        op.init();
-        while (this.isOperatorControl()) {
-            getWatchdog().feed();
-            if (!op.done) op.execute();
-            m_ds.waitForData();
-        }
-        if(isDisabled()) op.disable();
+    public void autonomousPeriodic() {
+        if (!auto.done) auto.execute();
+    }
+
+    public void autonomousContinuous() {
+        auto.highPriortiy();
+    }
+
+    public void disabledInit() {
+        auto.disable();
+        op.disable();
+    }
+
+    public void disabledPeriodic() {
+    }
+
+    public void disabledContinuous() {
     }
     
-    /*public void startCompetition() {
-        devices = new Devices();
-        config = new Configuration();
-        op = new OperatorControl(this);
-        auto = new Autonomous(this);
-        
-        while (true) {
-            if (isOperatorControl()) {
-                op.done = false;
-                op.init();
-                while (this.isOperatorControl()) {
-                    if (!op.done) op.execute();
-                }
-                if(isDisabled()) op.disable();
-            } else if (isAutonomous()) {
-                auto.done = false;
-                auto.init();
-                while (this.isAutonomous()) {
-                    if (!auto.done) auto.execute();
-                }
-                if(isDisabled()) auto.disable();
-            } else if (isDisabled()) {
-                while(isDisabled()) {}
-            }
-        }
-    }*/
+    public void teleopInit() {
+        op.done = false;
+        op.init();
+    }
+
+    public void teleopPeriodic() {
+        if (!op.done) op.execute();
+    }
+
+    public void teleopContinuous() {
+        op.highPriortiy();
+    }
 }

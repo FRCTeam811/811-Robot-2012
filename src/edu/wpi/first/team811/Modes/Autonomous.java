@@ -47,6 +47,13 @@ public class Autonomous extends Mode {
     public void execute() {
         
     }
+
+    /**
+     * Any very important code goes here
+     */
+    public void highPriortiy() {
+        
+    }
     
     /**
      * Runs once autonomous is disabled

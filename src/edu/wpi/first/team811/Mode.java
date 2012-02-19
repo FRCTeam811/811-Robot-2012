@@ -50,6 +50,11 @@ public abstract class Mode {
     public abstract void execute();
     
     /**
+     * Any very important code goes here
+     */
+    public abstract void highPriortiy();
+    
+    /**
      * Runs once mode is disabled
      */
     public abstract void disable();

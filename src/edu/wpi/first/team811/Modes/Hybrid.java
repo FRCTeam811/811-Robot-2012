@@ -68,6 +68,9 @@ public class Hybrid extends Mode{
         }
     }
 
+    public void highPriortiy() {
+    }
+    
     public void disable() {
     }
 
