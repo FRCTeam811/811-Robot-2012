@@ -72,9 +72,13 @@ public class Shooter extends SubSystem {
             } else {
                 //startShooter(getSpeed());
                 autoStartShooter();
-                timer.schedule(new load(), 2000);
-                timer.schedule(new stopload(), 3000);
-                timer.schedule(new shoot(0), 3000);
+                new load().run();
+                //timer.schedule(new load(), 2000);
+                while(d.joy2.getRawAxis(c.shoot) == 1) ds.waitForData();
+                new stopload().run();
+                new shoot(0).run();
+                //timer.schedule(new stopload(), 1000);
+                //timer.schedule(new shoot(0), 1000);
             }
         }
         if (!manualOn) {
@@ -90,10 +94,12 @@ public class Shooter extends SubSystem {
             }
 
             //Shoot 2 balls
-            startShooter(.8);
-            timer.schedule(new load(), 2000);
-            timer.schedule(new stopload(), 4000);
-            timer.schedule(new shoot(0), 4000);
+            //startShooter(.8);
+            autoStartShooter();
+            new load().run();
+            //timer.schedule(new load(), 2000);
+            timer.schedule(new stopload(), 2000);
+            timer.schedule(new shoot(0), 2000);
 
             //Move to the bridge
             timer.schedule(new moveDrive(.75, 0), 4000);
@@ -108,18 +114,19 @@ public class Shooter extends SubSystem {
         double initTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
         while (vision() && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 2) {// for 2 seconds adjust shooter
         }
-        startShooter(.8);
-        timer.schedule(new load(), 2000);
-        timer.schedule(new stopload(), 4000);
-        timer.schedule(new shoot(0), 4000);
+        //startShooter(.8);
+        autoStartShooter();
+        //timer.schedule(new load(), 2000);
+        new load().run();
+        timer.schedule(new stopload(), 2000);
+        timer.schedule(new shoot(0), 2000);
     }
 
     public void exclusiveRun(Object param) {//Set shooter speed with PID
         wheelPID.enable();
         wheelPID.setSetpoint(((Double)param).doubleValue());
-        while (!wheelPID.onTarget()) {
+        while (!wheelPID.onTarget() && d.joy2.getRawAxis(c.shoot) == 1) {
             ds.waitForData();
-            
         }
         wheelPID.disable();
     }
