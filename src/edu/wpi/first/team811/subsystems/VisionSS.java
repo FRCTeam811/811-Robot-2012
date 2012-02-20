@@ -28,4 +28,9 @@ public class VisionSS extends SubSystem {
         d.leftDriveJag.set(d.joy1.getY());
         //d.turret.set(d.joy1.getRawAxis(3));
     }
+
+    public void pause() {
+        d.rightDriveJag.set(0);
+        d.leftDriveJag.set(0);
+    }
 }

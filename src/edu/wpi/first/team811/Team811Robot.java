@@ -11,10 +11,7 @@ package edu.wpi.first.team811;
 import edu.wpi.first.team811.Modes.Autonomous;
 import edu.wpi.first.team811.Modes.Hybrid;
 import edu.wpi.first.team811.Modes.OperatorControl;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.SimpleRobot;
-import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -89,5 +86,17 @@ public class Team811Robot extends IterativeRobot {
 
     public void teleopContinuous() {
         op.highPriortiy();
+    }
+    
+    public void runExclusive(SubSystem s, Object param) {
+        if(isAutonomous()) {
+            if(config.hybridOn) {
+                hybrid.pause();
+                return;
+            }
+            auto.pause();
+        }
+        if(isOperatorControl()) op.pause();
+        s.exclusiveRun(param);
     }
 }

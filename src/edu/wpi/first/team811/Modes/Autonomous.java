@@ -54,6 +54,13 @@ public class Autonomous extends Mode {
     }
     
     /**
+     * Pauses all moving parts to yield to exclusive mode
+     */
+    public void pause() {
+        shooter.pause();
+    }
+    
+    /**
      * Runs once autonomous is disabled
      */
     public void disable() {

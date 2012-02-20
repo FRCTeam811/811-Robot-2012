@@ -32,5 +32,10 @@ public class DriveTrain extends SubSystem {
         d.rd1.arcadeDrive(d.joy1.getRawAxis(2) * (slowMode ? .7 : 1), d.joy1.getRawAxis(4) * (slowMode ? .7 : 1));
             
     }
+
+    public void pause() {
+        d.rd1.stopMotor();
+    }
+    
     boolean slowMode = false;
 }

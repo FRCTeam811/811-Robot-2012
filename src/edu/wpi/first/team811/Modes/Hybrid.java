@@ -71,6 +71,9 @@ public class Hybrid extends Mode {
     public void disable() {
     }
 
+    public void pause() {
+    }
+    
     private void shoot() {
     }
 

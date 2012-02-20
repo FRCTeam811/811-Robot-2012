@@ -55,6 +55,11 @@ public abstract class Mode {
     public abstract void highPriortiy();
     
     /**
+     * Pauses all moving parts to yield to exclusive mode
+     */
+    public abstract void pause();
+    
+    /**
      * Runs once mode is disabled
      */
     public abstract void disable();

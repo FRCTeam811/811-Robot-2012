@@ -6,7 +6,6 @@ package edu.wpi.first.team811.subsystems;
 
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -62,5 +61,10 @@ public class ShooterDebug extends SubSystem {
     public void shoot(double speed) {
         speed *= -1;//Apparently the shooter is backwards, this fixes it
         d.shooter.set(speed);
+    }
+
+    public void pause() {
+        d.shooter.set(0);
+        d.turret.set(0);
     }
 }

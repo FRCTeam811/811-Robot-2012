@@ -46,4 +46,8 @@ public class Gathering extends SubSystem {
             d.conveyorBelt.set(0);//Stop Conveyer Belt
         }
     }
+
+    public void pause() {
+        d.conveyorBelt.set(0);
+    }
 }

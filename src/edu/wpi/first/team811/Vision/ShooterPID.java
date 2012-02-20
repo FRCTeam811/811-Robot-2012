@@ -4,6 +4,7 @@
  */
 package edu.wpi.first.team811.Vision;
 
+import edu.wpi.first.team811.Configuration;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.PIDController;
@@ -17,12 +18,12 @@ public class ShooterPID extends PIDController {
     Jaguar out;
     
     public ShooterPID(Encoder source, Jaguar output) {
-        super(.0002, .0002, .005, source, output, .1);
+        super(Configuration.pidP, Configuration.pidI, Configuration.pidD, source, output, Configuration.pidPeriod);
         
         out = output;
         
         setOutputRange(-1, 0);
-        setTolerance(5);
+        setTolerance(Configuration.pidTolerance);
     }
 
     public synchronized void disable() {

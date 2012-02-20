@@ -43,10 +43,12 @@ public class BridgeArm extends SubSystem {
 //            d.bridgeArm.set(0);
 //        }
     }
-
-//MRG - if they fix the limit switch be sure to put the code back in for it. (acctually even if the switch does not work shouldn't hurt to have the code in.
-
+    
     public void armDown() {//if armUp is pressed, arm moves up
             d.bridgeArm.set(-1.0);
+    }
+
+    public void pause() {
+        d.bridgeArm.set(0);
     }
 }

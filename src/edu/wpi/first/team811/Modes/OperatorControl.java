@@ -61,6 +61,17 @@ public class OperatorControl extends Mode {
     }
     
     /**
+     * Pauses all moving parts to yield to exclusive mode
+     */
+    public void pause() {
+        bridgeArm.pause();
+        drivetrain.pause();
+        feeder.pause();
+        gatherer.pause();
+        shooter.pause();
+    }
+    
+    /**
      * Runs once operator control is disabled
      */
     public void disable() {

@@ -127,7 +127,10 @@ public abstract class SubSystem {
         }
     }
     
-    
+    /**
+     * Pauses all moving parts to yield to exclusive mode
+     */
+    public abstract void pause();
 
     /**
      * OPTIONAL extra logic method
@@ -152,5 +155,13 @@ public abstract class SubSystem {
      * @param param any Object needed for the logic statement, usually is null
      */
     public void logic3(Object param) {
+    }
+    
+    /**
+     * OPTIONAL run method without running anything else (runs through runExclusive() on Team811Robot)
+     * 
+     * @param param any Object needed for the logic statement, usually is null
+     */
+    public void exclusiveRun(Object param) {
     }
 }

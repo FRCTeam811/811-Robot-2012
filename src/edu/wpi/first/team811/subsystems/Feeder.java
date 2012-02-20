@@ -42,4 +42,8 @@ public class Feeder extends SubSystem {
              d.feeder.set(Relay.Value.kOff);
         }
     }
+
+    public void pause() {
+        d.feeder.set(Relay.Value.kOff);
+    }
 }

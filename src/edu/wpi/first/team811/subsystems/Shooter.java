@@ -7,7 +7,8 @@ package edu.wpi.first.team811.subsystems;
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
 import edu.wpi.first.team811.Vision.ShooterPID;
-import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.Timer;
@@ -29,12 +30,18 @@ public class Shooter extends SubSystem {
     int ballState = 0;//0-old, 1-medium, 2-new
     ShooterPID wheelPID;
     Timer timer = new Timer();
+    DriverStation ds = DriverStation.getInstance();
 
     public Shooter(Team811Robot teamrobot) {
         super(teamrobot);
         SmartDashboard.putString("Ball State", "Old");
         
         wheelPID = new ShooterPID(d.shooterEncoder,d.shooter);
+        
+        d.shooterEncoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kRate);
+        d.shooterEncoder.setDistancePerPulse(.004);
+        
+        d.shooterEncoder.start();
     }
 
     public String ID() {
@@ -63,9 +70,10 @@ public class Shooter extends SubSystem {
             if (manualOn) {
                 manualShooting();
             } else {
-                startShooter(getSpeed());
+                //startShooter(getSpeed());
+                autoStartShooter();
                 timer.schedule(new load(), 2000);
-                timer.schedule(new unload(), 3000);
+                timer.schedule(new stopload(), 3000);
                 timer.schedule(new shoot(0), 3000);
             }
         }
@@ -84,7 +92,7 @@ public class Shooter extends SubSystem {
             //Shoot 2 balls
             startShooter(.8);
             timer.schedule(new load(), 2000);
-            timer.schedule(new unload(), 4000);
+            timer.schedule(new stopload(), 4000);
             timer.schedule(new shoot(0), 4000);
 
             //Move to the bridge
@@ -102,26 +110,70 @@ public class Shooter extends SubSystem {
         }
         startShooter(.8);
         timer.schedule(new load(), 2000);
-        timer.schedule(new unload(), 4000);
+        timer.schedule(new stopload(), 4000);
         timer.schedule(new shoot(0), 4000);
     }
 
-    public double getSpeed() {
-        double mspeed = 1;
+    public void exclusiveRun(Object param) {//Set shooter speed with PID
+        wheelPID.enable();
+        wheelPID.setSetpoint(((Double)param).doubleValue());
+        while (!wheelPID.onTarget()) {
+            ds.waitForData();
+            
+        }
+        wheelPID.disable();
+    }
+
+    public void pause() {
+        d.shooter.set(0);
+        d.turret.set(0);
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="Old Shooter Speed Set">
+    /*public double getSpeed() {//Motor speed based
+     * double mspeed = 1;
+     * double speeds[];
+     * 
+     * switch (ballState) {
+     * case 0:
+     * speeds = c.speedsOld;
+     * break;
+     * case 1:
+     * speeds = c.speedsMed;
+     * break;
+     * case 2:
+     * speeds = c.speedsNew;
+     * break;
+     * default:
+     * speeds = c.speedsMed;
+     * }
+     * 
+     * for (int i = 0; i < speeds.length; i++) {
+     * if (c.heights1[i] <= rectH && c.heights2[i] >= rectH) {
+     * mspeed = speeds[i];
+     * i = speeds.length;
+     * }
+     * }
+     * return mspeed;
+     * }*/
+    //</editor-fold>
+    
+    public double getSpeed() {//Encoder based
+        double mspeed = 80;
         double speeds[];
 
         switch (ballState) {
             case 0:
-                speeds = c.speedsOld;
+                speeds = c.espeedOld;
                 break;
             case 1:
-                speeds = c.speedsMed;
+                speeds = c.espeedMed;
                 break;
             case 2:
-                speeds = c.speedsNew;
+                speeds = c.espeedNew;
                 break;
             default:
-                speeds = c.speedsMed;
+                speeds = c.espeedMed;
         }
 
         for (int i = 0; i < speeds.length; i++) {
@@ -130,7 +182,12 @@ public class Shooter extends SubSystem {
                 i = speeds.length;
             }
         }
+        SmartDashboard.putDouble("Shooter At RAE:", mspeed);
         return mspeed;
+    }
+    
+    public void autoStartShooter() {//Starts the shooter based on rectangle input
+        tr.runExclusive(this, new Double(getSpeed()));
     }
 
     public void startShooter(double sSpeed) {
@@ -275,7 +332,7 @@ public class Shooter extends SubSystem {
         }
     }
 
-    class unload extends TimerTask {
+    class stopload extends TimerTask {
 
         public void run() {
             d.conveyorBelt.set(0);
