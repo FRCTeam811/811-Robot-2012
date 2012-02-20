@@ -21,7 +21,6 @@ public class Devices {
     public DigitalInput gathererBottom;///limitswitch that counts the balls.
     public Jaguar leftDriveJag;///
     public Victor bridgeArm;///
-    public DigitalInput armBottom;///
     public DigitalInput armTop;///
     public DigitalInput gathererTop;///
     public Jaguar rightDriveJag;///
@@ -44,8 +43,7 @@ public class Devices {
         gathererBottom = new DigitalInput(7);
         leftDriveJag = new Jaguar(1);
         bridgeArm = new Victor(5);
-        armBottom = new DigitalInput(3);
-        armTop = new DigitalInput(5);
+        armTop = new DigitalInput(3);
         gathererTop = new DigitalInput(6);
         rightDriveJag = new Jaguar(2);
         shooterEncoder = new Encoder(1, 13, 1, 14, true, EncodingType.k4X);

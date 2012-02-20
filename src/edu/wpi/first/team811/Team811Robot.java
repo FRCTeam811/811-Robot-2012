@@ -9,6 +9,7 @@ package edu.wpi.first.team811;
 
 
 import edu.wpi.first.team811.Modes.Autonomous;
+import edu.wpi.first.team811.Modes.Hybrid;
 import edu.wpi.first.team811.Modes.OperatorControl;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -28,31 +29,47 @@ public class Team811Robot extends IterativeRobot {
     public Configuration config;
     private Mode op;
     private Mode auto;
-
+    private Mode hybrid;
+    
     public void robotInit() {
         devices = new Devices();
         config = new Configuration();
         op = new OperatorControl(this);
         auto = new Autonomous(this);
+        hybrid = new Hybrid(this);
         getWatchdog().setEnabled(true);
     }
 
     public void autonomousInit() {
+        if(config.hybridOn) {
+            hybrid.done = false;
+            hybrid.init();
+            return;
+        }
         auto.done = false;
         auto.init();
     }
 
     public void autonomousPeriodic() {
+        if(config.hybridOn) {
+            if (!hybrid.done) hybrid.execute();
+            return;
+        }
         if (!auto.done) auto.execute();
-    }
+    }        
 
     public void autonomousContinuous() {
+        if(config.hybridOn) {
+            hybrid.highPriortiy();
+            return;
+        }
         auto.highPriortiy();
     }
 
     public void disabledInit() {
         auto.disable();
         op.disable();
+        hybrid.disable();
     }
 
     public void disabledPeriodic() {

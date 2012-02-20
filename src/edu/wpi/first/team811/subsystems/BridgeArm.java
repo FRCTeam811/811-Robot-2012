@@ -2,7 +2,6 @@ package edu.wpi.first.team811.subsystems;
 
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
-import edu.wpi.first.wpilibj.Relay;
 
 /**
  * Controls the bridge arm on the robot 
@@ -32,25 +31,22 @@ public class BridgeArm extends SubSystem {
             debug2dashboard("up");
         } else {
             d.bridgeArm.set(0);
-            //d.bridgeArm.set(Relay.Value.kOff);
             debug2dashboard("off");
         }
     }
     
-    public void armDown() {//if armDown is pressed, arm moves down (If the bottom limit switch is false)
-        //if (d.armBottom.get()) {//TODO uncomment me
-            d.bridgeArm.set(1.0);
-        //} else{
-        //    d.bridgeArm.set(0);
-        //}
+    public void armUp() {//if armDown is pressed, arm moves down (If the bottom limit switch is false)
+        d.bridgeArm.set(1.0);
+//        if (d.armTop.get()) {//switch is inverted
+//            d.bridgeArm.set(1.0);
+//        } else{
+//            d.bridgeArm.set(0);
+//        }
     }
 
-    public void armUp() {//if armUp is pressed, arm moves up(If the top limit switch is false)
-        //if (d.armTop.get() == false) {
+//MRG - if they fix the limit switch be sure to put the code back in for it. (acctually even if the switch does not work shouldn't hurt to have the code in.
+
+    public void armDown() {//if armUp is pressed, arm moves up
             d.bridgeArm.set(-1.0);
-        //d.bridgeArm.set(Relay.Value.kForward);
-        //} else{
-        //    d.bridgeArm.set(0);
-        //}
     }
 }

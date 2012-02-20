@@ -4,13 +4,10 @@
  */
 package edu.wpi.first.team811.Modes;
 
-import edu.wpi.first.team811.Configuration;
-import edu.wpi.first.team811.Devices;
 import edu.wpi.first.team811.Mode;
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
 import edu.wpi.first.team811.subsystems.Shooter;
-import edu.wpi.first.wpilibj.Watchdog;
 
 /**
  *
@@ -38,6 +35,7 @@ public class Autonomous extends Mode {
      * Runs once when autonomous is enabled
      */
     public void init() {
+        
         shooter.execute(1, "Start");
     }
     
@@ -62,5 +60,6 @@ public class Autonomous extends Mode {
         
     }
     
+    Mode hybrid;
     SubSystem shooter;
 }

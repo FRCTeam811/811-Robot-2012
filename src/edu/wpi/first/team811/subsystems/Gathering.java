@@ -6,7 +6,6 @@ package edu.wpi.first.team811.subsystems;
 
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
-import edu.wpi.first.wpilibj.Relay.Value;
 
 /**
  * Controls the conveyer belt
@@ -19,7 +18,7 @@ public class Gathering extends SubSystem {
 
     boolean ballCounted = false;
     boolean[] states = new boolean[4];
-    
+    boolean gathererOn = false;
 
     public Gathering(Team811Robot teamrobot) {
         super(teamrobot);
@@ -29,24 +28,22 @@ public class Gathering extends SubSystem {
         return "Gathering";
     }
 
+// MRG - Please change the joy stick numbers below to use the values in the Configuration.java
     public void logic(Object param) {
         
-        if(d.joy2.getRawAxis(6) > 0 || d.joy1.getRawAxis(3) < 0) {
-            c.gathererOn = true;
+        if(d.joy2.getRawAxis(c.gatherer2) > 0 || d.joy1.getRawAxis(c.gatherer) < 0) {
+            gathererOn = true;
         }
-        if(d.joy2.getRawAxis(6) < 0 || d.joy1.getRawAxis(3) > 0) {
-            c.gathererOn = false;
+        if(d.joy2.getRawAxis(c.gatherer2) < 0 || d.joy1.getRawAxis(c.gatherer) > 0) {
+            gathererOn = false;
         }
         
-        if(d.joy1.getRawButton(1)) {
-            //d.conveyorBelt.set(Value.kForward);//Start Conveyer Belt
-            d.conveyorBelt.set(1);
-        } else if(c.gathererOn) {
-            //d.conveyorBelt.set(Value.kReverse);//Start Conveyer Belt
-            d.conveyorBelt.set(-1);
+        if(d.joy1.getRawButton(c.gathererReverse)) {
+            d.conveyorBelt.set(1);//Reverse Conveyer Belt
+        } else if(gathererOn) {
+            d.conveyorBelt.set(-1);//Start Conveyer Belt
         } else {
-            //d.conveyorBelt.set(Value.kOff);//Stop Conveyer Belt
-            d.conveyorBelt.set(0);
+            d.conveyorBelt.set(0);//Stop Conveyer Belt
         }
     }
 }

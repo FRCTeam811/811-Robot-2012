@@ -24,13 +24,13 @@ public class DriveTrain extends SubSystem {
 
     public void logic(Object param) {
         
-        d.rd1.arcadeDrive(d.joy1.getRawAxis(2), d.joy1.getRawAxis(4));
+//        d.rd1.arcadeDrive(d.joy1.getRawAxis(2), d.joy1.getRawAxis(4));
         
-//        if(d.joy1.getRawButton(c.motorFullSpeed)) slowMode = false;
-//        if(d.joy1.getRawButton(c.motorSpeed2)) slowMode = true;
-//        
-//        d.rd1.arcadeDrive(d.joy1.getRawAxis(2) * (slowMode ? .8 : 1), d.joy1.getRawAxis(4) * (slowMode ? .8 : 1));
-//            
+        if(d.joy1.getRawButton(c.motorFullSpeed)) slowMode = false;
+        if(d.joy1.getRawButton(c.motorSpeed2)) slowMode = true;
+        
+        d.rd1.arcadeDrive(d.joy1.getRawAxis(2) * (slowMode ? .7 : 1), d.joy1.getRawAxis(4) * (slowMode ? .7 : 1));
+            
     }
     boolean slowMode = false;
 }
