@@ -8,6 +8,7 @@ import edu.wpi.first.team811.Mode;
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
 import edu.wpi.first.team811.subsystems.Shooter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Autonomous extends Mode {
     //<editor-fold defaultstate="collapsed" desc="StartUp">
     public Autonomous(Team811Robot tr) {
         super(tr);
+        SmartDashboard.putInt(c.SDautoMode, 0);
     }
     /*public Autonomous(Devices dev, Configuration config, Watchdog wd) {
         super(dev, config, wd);
@@ -35,8 +37,9 @@ public class Autonomous extends Mode {
      * Runs once when autonomous is enabled
      */
     public void init() {
-        
-        shooter.execute(1, "Start");
+        int key = SmartDashboard.getInt(c.SDautoMode, 0);
+        if(key == 0) shooter.execute(1, "Start");
+        else if(key == 1) shooter.execute(2, "Start");
     }
     
     /**
@@ -57,7 +60,7 @@ public class Autonomous extends Mode {
      * Pauses all moving parts to yield to exclusive mode
      */
     public void pause() {
-        shooter.pause();
+        //shooter.pause();
     }
     
     /**

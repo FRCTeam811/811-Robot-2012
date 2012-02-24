@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 /**
  * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the SimpleRobot
+ * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
  * directory.
@@ -35,6 +35,7 @@ public class Team811Robot extends IterativeRobot {
         auto = new Autonomous(this);
         hybrid = new Hybrid(this);
         getWatchdog().setEnabled(true);
+       // m_ds.getBatteryVoltage();
     }
 
     public void autonomousInit() {
@@ -48,6 +49,7 @@ public class Team811Robot extends IterativeRobot {
     }
 
     public void autonomousPeriodic() {
+       // m_ds.getBatteryVoltage();
         if(config.hybridOn) {
             if (!hybrid.done) hybrid.execute();
             return;
@@ -56,6 +58,8 @@ public class Team811Robot extends IterativeRobot {
     }        
 
     public void autonomousContinuous() {
+        
+        getWatchdog().feed();
         if(config.hybridOn) {
             hybrid.highPriortiy();
             return;
@@ -73,6 +77,7 @@ public class Team811Robot extends IterativeRobot {
     }
 
     public void disabledContinuous() {
+        //m_ds.getBatteryVoltage();
     }
     
     public void teleopInit() {
@@ -81,14 +86,17 @@ public class Team811Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
+        //m_ds.getBatteryVoltage();
         if (!op.done) op.execute();
     }
 
     public void teleopContinuous() {
+        getWatchdog().feed();
         op.highPriortiy();
     }
     
     public void runExclusive(SubSystem s, Object param) {
+        getWatchdog().feed();
         if(isAutonomous()) {
             if(config.hybridOn) {
                 hybrid.pause();

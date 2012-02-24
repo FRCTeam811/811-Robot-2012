@@ -40,12 +40,10 @@ public class Devices {
         
         ///Variables Set Start
         ac = AxisCamera.getInstance();
-        gathererBottom = new DigitalInput(7);
         leftDriveJag = new Jaguar(1);
+        rightDriveJag = new Jaguar(2);
         bridgeArm = new Victor(5);
         armTop = new DigitalInput(3);
-        gathererTop = new DigitalInput(6);
-        rightDriveJag = new Jaguar(2);
         shooterEncoder = new Encoder(1, 13, 1, 14, true, EncodingType.k4X);
         shooter = new Jaguar(3);
         feeder = new Relay(4);
@@ -57,5 +55,6 @@ public class Devices {
         turretLimit = new DigitalInput(4);
         vision = new Vision();
         ///Variables Set End
+        ac.freshImage();
     }
 }

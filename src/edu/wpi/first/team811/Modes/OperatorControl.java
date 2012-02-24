@@ -48,6 +48,7 @@ public class OperatorControl extends Mode {
      */
     public void execute() {
         bridgeArm.execute(null);
+        drivetrain.execute(null);
         feeder.execute(null);
         gatherer.execute(null);
         shooter.execute(null);
@@ -57,7 +58,7 @@ public class OperatorControl extends Mode {
      * Any very important code goes here
      */
     public void highPriortiy() {
-        drivetrain.execute(null);
+        
     }
     
     /**

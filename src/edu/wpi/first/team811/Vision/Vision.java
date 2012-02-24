@@ -35,7 +35,7 @@ public class Vision {
 
         nData = true;
         
-        System.out.println(txOffset);
+        System.out.println(height);
         
         xOffset = txOffset;
         height = theight;

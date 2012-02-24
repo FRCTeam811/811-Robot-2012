@@ -8,8 +8,6 @@ package edu.wpi.first.team811;
 /**
  * All the configuration variables used on the robot
  * 
- * NO MORE STATE MACHINE VARIABLES YYYAAAYYY!!!
- * 
  * @author Saswat
  */
 public class Configuration {
@@ -36,22 +34,24 @@ public class Configuration {
     public int autoTurret = 9;///<<<Mapped Var>>><<<Button>>> x2
     public int gatherer2 = 6;///<<<Mapped Var>>><<<Axis>>> x2
     ///Shooter data tables
-    public double[] heights1 =  {105, 65 , 50};///greater
-    public double[] heights2 =  {95 , 50 , 40};///less
-    public double[] speedsNew = {.55, .85, .7};///raw motor speeds - DO NOT USE
-    public double[] speedsMed = {.6 , .9 , 1 };///raw motor speeds - DO NOT USE
-    public double[] speedsOld = {.6 , 1  , 1 };///raw motor speeds - DO NOT USE
-    public double[] espeedNew = {32 , 0  , 0 };///encoder speeds
-    public double[] espeedMed = {32 , 0  , 0 };///encoder speeds
-    public double[] espeedOld = {32 , 0  , 0 };///encoder speeds
+    public double[] heights1 =  {150, 89 , 74, 63, 60, 56, 54, 45, 35};///greater
+    public double[] heights2 =  {90 , 75 , 71, 60, 57, 55, 50, 36, 30};///less
+    //public double[] speedsNew = {.55, .85, .7};///raw motor speeds - DO NOT USE
+    //public double[] speedsMed = {.6 , .9 , 1 };///raw motor speeds - DO NOT USE
+    //public double[] speedsOld = {.6 , 1  , 1 };///raw motor speeds - DO NOT USE
+    public double[] espeedNew = {34 , 36 , 37, 42, 43, 44, 46, 54, 56};///encoder speeds
+    public double[] espeedMed = {33 , 37 , 38, 43, 44, 45, 47, 55, 57};///encoder speeds
+    public double[] espeedOld = {33 , 37 , 38, 43, 44, 45, 47, 56, 58};///encoder speeds
     ///Shooter PID Constants
     public static double pidP = .0002;///
     public static double pidI = .0002;///
     public static double pidD = .0005;///
-    public static double pidPeriod = .1;///
+    public static double pidPeriod = .01;///
     public static double pidTolerance = 5;///%
     ///others
-    public int visionErrorMargin = 5;///Margin of error allowed for vision
+    public int visionErrorMargin = 2;///Margin of error allowed for vision
     public double robotDriveExpire = 5;///Time (seconds?) before the Robot Drive Device complains about the output not being updated Used By:Drive Train
     public boolean hybridOn = false;///
+    public String SDautoMode = "Autonomous Mode";//SmartDashboard autonomous mode key
+    public int autoDTMoveTime = 3500;
 }
