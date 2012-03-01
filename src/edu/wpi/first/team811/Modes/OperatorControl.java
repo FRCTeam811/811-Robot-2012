@@ -40,7 +40,8 @@ public class OperatorControl extends Mode {
      * Runs once when operator control is enabled
      */
     public void init() {
-        
+        d.shooterEncoder.start();
+        shooter.enabled();
     }
     
     /**
@@ -76,7 +77,8 @@ public class OperatorControl extends Mode {
      * Runs once operator control is disabled
      */
     public void disable() {
-        
+        shooter.disabled();
+        d.shooterEncoder.stop();
     }
     
     SubSystem bridgeArm;

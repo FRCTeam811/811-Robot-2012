@@ -37,9 +37,9 @@ public class Autonomous extends Mode {
      * Runs once when autonomous is enabled
      */
     public void init() {
-        int key = SmartDashboard.getInt(c.SDautoMode, 0);
-        if(key == 0) shooter.execute(1, "Start");
-        else if(key == 1) shooter.execute(2, "Start");
+        d.shooterEncoder.start();
+        shooter.execute(1, "Start");
+        d.shooterEncoder.stop();
     }
     
     /**

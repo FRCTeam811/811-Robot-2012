@@ -10,7 +10,6 @@ package edu.wpi.first.team811.Modes;
  */
 import edu.wpi.first.team811.Mode;
 import edu.wpi.first.team811.Team811Robot;
-import edu.wpi.first.team811.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Kinect;
 import edu.wpi.first.wpilibj.KinectStick;

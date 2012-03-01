@@ -26,58 +26,43 @@ public class Team811Robot extends IterativeRobot {
     public Configuration config;
     private Mode op;
     private Mode auto;
-    private Mode hybrid;
     
     public void robotInit() {
         devices = new Devices();
         config = new Configuration();
+        
         op = new OperatorControl(this);
-        auto = new Autonomous(this);
-        hybrid = new Hybrid(this);
+        if(config.hybridOn) {
+            auto = new Hybrid(this);
+        } else {
+            auto = new Autonomous(this);
+        }
+        
         getWatchdog().setEnabled(true);
-       // m_ds.getBatteryVoltage();
     }
 
     public void autonomousInit() {
-        if(config.hybridOn) {
-            hybrid.done = false;
-            hybrid.init();
-            return;
-        }
         auto.done = false;
         auto.init();
     }
 
     public void autonomousPeriodic() {
-       // m_ds.getBatteryVoltage();
-        if(config.hybridOn) {
-            if (!hybrid.done) hybrid.execute();
-            return;
-        }
         if (!auto.done) auto.execute();
     }        
 
     public void autonomousContinuous() {
-        
-        getWatchdog().feed();
-        if(config.hybridOn) {
-            hybrid.highPriortiy();
-            return;
-        }
         auto.highPriortiy();
     }
 
     public void disabledInit() {
         auto.disable();
         op.disable();
-        hybrid.disable();
     }
 
     public void disabledPeriodic() {
     }
 
     public void disabledContinuous() {
-        //m_ds.getBatteryVoltage();
     }
     
     public void teleopInit() {
@@ -86,24 +71,16 @@ public class Team811Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        //m_ds.getBatteryVoltage();
         if (!op.done) op.execute();
     }
 
     public void teleopContinuous() {
-        getWatchdog().feed();
         op.highPriortiy();
     }
     
     public void runExclusive(SubSystem s, Object param) {
         getWatchdog().feed();
-        if(isAutonomous()) {
-            if(config.hybridOn) {
-                hybrid.pause();
-                return;
-            }
-            auto.pause();
-        }
+        if(isAutonomous()) auto.pause();
         if(isOperatorControl()) op.pause();
         s.exclusiveRun(param);
     }

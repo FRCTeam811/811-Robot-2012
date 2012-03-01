@@ -59,7 +59,7 @@ public abstract class SubSystem {
      * @param text String to print
      */
     public void debug(String text) {
-        System.out.println("Class " + ID() + ": " + text);
+        //System.out.println("Class " + ID() + ": " + text);
     }
     
     /**
@@ -99,7 +99,7 @@ public abstract class SubSystem {
      */
     public void execute(Object param) {
         if (!isWaiting()) {
-            c = tr.config;
+            //c = tr.config;
             logic(param);
         }
     }
@@ -112,7 +112,7 @@ public abstract class SubSystem {
      */
     public void execute(int number, Object param) {
         if (!isWaiting()) {
-            c = tr.config;
+            //c = tr.config;
             switch (number) {
                 case 1:
                     logic1(param);
@@ -163,5 +163,11 @@ public abstract class SubSystem {
      * @param param any Object needed for the logic statement, usually is null
      */
     public void exclusiveRun(Object param) {
+    }
+    
+    public void enabled() {
+    }
+    
+    public void disabled() {
     }
 }

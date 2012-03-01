@@ -15,9 +15,7 @@ import edu.wpi.first.team811.Team811Robot;
  * @author David
  */
 public class Gathering extends SubSystem {
-
-    boolean ballCounted = false;
-    boolean[] states = new boolean[4];
+    
     boolean gathererOn = false;
 
     public Gathering(Team811Robot teamrobot) {
@@ -27,14 +25,12 @@ public class Gathering extends SubSystem {
     public String ID() {
         return "Gathering";
     }
-
-// MRG - Please change the joy stick numbers below to use the values in the Configuration.java
+    
     public void logic(Object param) {
         
         if(d.joy2.getRawAxis(c.gatherer2) > 0 || d.joy1.getRawAxis(c.gatherer) < 0) {
             gathererOn = true;
-        }
-        if(d.joy2.getRawAxis(c.gatherer2) < 0 || d.joy1.getRawAxis(c.gatherer) > 0) {
+        } else if(d.joy2.getRawAxis(c.gatherer2) < 0 || d.joy1.getRawAxis(c.gatherer) > 0) {
             gathererOn = false;
         }
         

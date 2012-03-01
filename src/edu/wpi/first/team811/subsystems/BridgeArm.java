@@ -4,13 +4,12 @@ import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
 
 /**
- * Controls the bridge arm on the robot 
- * 
- * Progress - 100%
- * Status - Reviewed, Ready for robot
- * 
+ * Controls the bridge arm on the robot
+ *
+ * Progress - 100% Status - Reviewed, Ready for robot
+ *
  * @author SM
- * 
+ *
  */
 public class BridgeArm extends SubSystem {
 
@@ -34,8 +33,8 @@ public class BridgeArm extends SubSystem {
             debug2dashboard("off");
         }
     }
-    
-    public void armUp() {//if armDown is pressed, arm moves down (If the bottom limit switch is false)
+
+    public void armUp() {//if armUp is pressed, arm moves up (If the top limit switch is false)
         d.bridgeArm.set(1.0);
 //        if (d.armTop.get()) {//switch is inverted
 //            d.bridgeArm.set(1.0);
@@ -43,9 +42,9 @@ public class BridgeArm extends SubSystem {
 //            d.bridgeArm.set(0);
 //        }
     }
-    
-    public void armDown() {//if armUp is pressed, arm moves up
-            d.bridgeArm.set(-1.0);
+
+    public void armDown() {//if armDown is pressed, arm moves down
+        d.bridgeArm.set(-1.0);
     }
 
     public void pause() {

@@ -39,7 +39,7 @@ public class Feeder extends SubSystem {
         if(feederOn) {
             d.feeder.set(Relay.Value.kReverse);
         } else {
-             d.feeder.set(Relay.Value.kOff);
+            d.feeder.set(Relay.Value.kOff);
         }
     }
 
