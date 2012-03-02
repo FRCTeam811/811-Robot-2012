@@ -26,12 +26,15 @@ public class Shooter extends SubSystem {
     double xOff = 0;
     double speed = 0.0;//for shooter
     int ballState = 0;//0-old, 1-medium, 2-new
+    int defaultSpeed = 34;
     PIDController wheelPID = null;
     Timer timer = null;
     DriverStation ds = DriverStation.getInstance();
+    Watchdog w;
 
     public Shooter(Team811Robot teamrobot) {
         super(teamrobot);
+        w = tr.getWatchdog();
         reset();
     }
 
@@ -41,7 +44,7 @@ public class Shooter extends SubSystem {
         SmartDashboard.putBoolean("Manual Mode", false);
         SmartDashboard.putDouble("Shooter At RPS:", 0.0);
         SmartDashboard.putBoolean("Turret Limit Switch:", false);
-        
+
         manualOn = false;
         slowTurret = false;
         turretTimerHit = false;
@@ -50,12 +53,14 @@ public class Shooter extends SubSystem {
         xOff = 0;
         speed = 0.0;
         ballState = 0;
-        
+
         d.shooterEncoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kRate);
         d.shooterEncoder.setDistancePerPulse(.004);
 
-        if(wheelPID != null) wheelPID.free();
-        
+        if (wheelPID != null) {
+            wheelPID.free();
+        }
+
         wheelPID = new PIDController(Configuration.pidP, Configuration.pidI, Configuration.pidD, new PIDSource() {
 
             public double pidGet() {
@@ -65,15 +70,15 @@ public class Shooter extends SubSystem {
 
             public void pidWrite(double output) {
                 d.shooter.set(output);
-                debug(d.shooterEncoder.getRate()+"");
-                debug(output+"");
+                debug(d.shooterEncoder.getRate() + "");
+                debug(output + "");
             }
         }, Configuration.pidPeriod);
-        
+
         wheelPID.setOutputRange(-1, 0);
         wheelPID.setInputRange(-80, 0);
         wheelPID.setTolerance(1.0);
-        
+
     }
 
     public void enabled() {
@@ -81,10 +86,12 @@ public class Shooter extends SubSystem {
     }
 
     public void disabled() {
-        wheelPID.free();
+        if (wheelPID != null) {
+            wheelPID.free();
+        }
         wheelPID = null;
     }
-    
+
     public String ID() {
         return "Shooter";
     }
@@ -105,10 +112,12 @@ public class Shooter extends SubSystem {
             d.turret.set(0);
             manualTurret();
         }
-        if (d.joy2.getRawAxis(c.shoot) == 1) {
+
+        //if (d.joy2.getRawAxis(c.shoot) == 1) {
             if (manualOn) {
                 manualShooting();
-            } else {
+            } 
+           if (d.joy2.getRawAxis(c.shoot) == 1 && !manualOn) {
 
                 vision();
 
@@ -116,12 +125,12 @@ public class Shooter extends SubSystem {
 
 //                while (d.joy2.getRawAxis(c.shoot) == 1) {
 //                    ds.waitForData();
-//                    tr.getWatchdog().feed();
+//                    w.feed();
 //                }
                 new stopload().run();
                 new shoot(0).run();
             }
-        }
+       // }
         if (!manualOn) {
             checkBallState();
         }
@@ -131,12 +140,16 @@ public class Shooter extends SubSystem {
     public void logic1(Object param) {//autonomous
         if (param == "Start") {
             reset();
-            timer.cancel();
+            if (timer != null) {
+                timer.cancel();
+            }
             timer = new Timer();
 
+            defaultSpeed = 57;
+            
             double initTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
             while (vision() && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 2) {// for 2 seconds adjust shooter
-                tr.getWatchdog().feed();
+                faw();
             }
 
             //Shoot 2 balls
@@ -144,8 +157,7 @@ public class Shooter extends SubSystem {
             debug("Starting PID");
             wheelPID.setSetpoint(getSpeed());
             while (edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 6) {
-                ds.waitForData();
-                tr.getWatchdog().feed();
+                faw();
             }
             debug("setpoint: " + wheelPID.getSetpoint());
             double get = wheelPID.get();
@@ -159,6 +171,7 @@ public class Shooter extends SubSystem {
             long timeOff = 3000;
 
             if (SmartDashboard.getInt(c.SDautoMode, 0) == 0) {
+            //if(!d.switchP1.get()) {//inverted
                 //Move to the bridge
                 timer.schedule(new moveDrive(.6, 0), 3000);
                 timer.schedule(new moveDrive(0, 0), 3000 + c.autoDTMoveTime);
@@ -170,7 +183,9 @@ public class Shooter extends SubSystem {
             timer.schedule(new TimerTask() {//Free all the resources since autonomous is(should be) used only once
 
                 public void run() {
-                    wheelPID.free();
+                    if (wheelPID != null) {
+                        wheelPID.free();
+                    }
                     wheelPID = null;
                     timer.cancel();
                 }
@@ -183,7 +198,7 @@ public class Shooter extends SubSystem {
 //
 //        double initTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
 //        while (vision() && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 2) {// for 2 seconds adjust shooter
-//            tr.getWatchdog().feed();
+//            w.feed();
 //        }
 //
 //        //Shoot 2 balls
@@ -192,7 +207,7 @@ public class Shooter extends SubSystem {
 //        wheelPID.setSetpoint(getSpeed());
 //        while (edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 6) {
 //            ds.waitForData();
-//            tr.getWatchdog().feed();
+//            w.feed();
 //        }
 //        debug("setpoint: " + wheelPID.getSetpoint());
 //        double get = wheelPID.get();
@@ -219,8 +234,7 @@ public class Shooter extends SubSystem {
         boolean onTargetLastState = false;
 
         while (d.joy2.getRawAxis(c.shoot) == 1) {
-            ds.waitForData();
-            tr.getWatchdog().feed();
+            faw();
             if (d.joy2.getRawAxis(c.feeder) > .5) {
                 d.feeder.set(Relay.Value.kReverse);
                 d.conveyorBelt.set(-1);
@@ -232,6 +246,7 @@ public class Shooter extends SubSystem {
                 onTargetLastState = !onTargetLastState;
                 SmartDashboard.putBoolean("PID on target", onTargetLastState);
             }
+            d.rd1.arcadeDrive(d.joy1.getRawAxis(2), d.joy1.getRawAxis(4));
         }
 
         debug("setpoint: " + wheelPID.getSetpoint());
@@ -258,7 +273,9 @@ public class Shooter extends SubSystem {
      */
     //</editor-fold>
     public double getSpeed() {//Encoder based
-        double mspeed = 80;
+        double mspeed = defaultSpeed;
+        
+        
         double speeds[];
 
         switch (ballState) {
@@ -332,22 +349,23 @@ public class Shooter extends SubSystem {
         boolean limitSwitch = !d.turretLimit.get();
         SmartDashboard.putBoolean("Turret Limit Switch:", limitSwitch);
 
-        if (limitSwitch && !turretTimerHit) {
-            timer.schedule(new TimerTask() {
+        //if (limitSwitch && !turretTimerHit) {
+        //    timer.schedule(new TimerTask() {
 
-                public void run() {
-                    turretTimerHit = true;
-                }
-            }, 2000);
-        } else if (Math.abs(d.joy2.getRawAxis(4)) < .2) {
+        //        public void run() {
+        //            turretTimerHit = true;
+        //        }
+        //    }, 2000);
+        //} else 
+        if (Math.abs(d.joy2.getRawAxis(4)) < .2) {
             d.turret.set(0);
         } else {
             d.turret.set(d.joy2.getRawAxis(4) * (slowTurret ? .5 : .8));
         }
 
-        if (!limitSwitch) {
-            turretTimerHit = false;
-        }
+        //if (!limitSwitch) {
+        //    turretTimerHit = false;
+        //}
     }
 
     public void manualShooting() {
@@ -409,8 +427,8 @@ public class Shooter extends SubSystem {
 
     public void centerTurret(double xOffset) {
         debug("xOff: " + xOffset);
-
-        if (d.turretLimit.get()) {
+        
+        if (!d.turretLimit.get()) {
             d.turret.set(0);
         } else if (Math.abs(xOffset) < 20) {
             d.turret.set(.7 * (xOffset / 100));
@@ -422,6 +440,11 @@ public class Shooter extends SubSystem {
             d.turret.set(.1 * (xOffset / 100));
         }
 
+    }
+    
+    public void faw() {//Feed and Wait
+        ds.waitForData();
+        w.feed();
     }
 
     class moveDrive extends TimerTask {

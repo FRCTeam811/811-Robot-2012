@@ -47,6 +47,8 @@ public class Team811Robot extends IterativeRobot {
     }
 
     public void autonomousPeriodic() {
+        getWatchdog().feed();
+        m_ds.waitForData();
         if (!auto.done) auto.execute();
     }        
 
@@ -60,6 +62,8 @@ public class Team811Robot extends IterativeRobot {
     }
 
     public void disabledPeriodic() {
+        getWatchdog().feed();
+        m_ds.waitForData();
     }
 
     public void disabledContinuous() {

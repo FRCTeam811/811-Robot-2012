@@ -37,9 +37,7 @@ public class Autonomous extends Mode {
      * Runs once when autonomous is enabled
      */
     public void init() {
-        d.shooterEncoder.start();
         shooter.execute(1, "Start");
-        d.shooterEncoder.stop();
     }
     
     /**
@@ -70,6 +68,5 @@ public class Autonomous extends Mode {
         
     }
     
-    Mode hybrid;
     SubSystem shooter;
 }

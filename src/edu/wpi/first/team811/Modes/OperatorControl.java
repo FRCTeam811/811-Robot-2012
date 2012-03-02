@@ -8,6 +8,9 @@ import edu.wpi.first.team811.Mode;
 import edu.wpi.first.team811.SubSystem;
 import edu.wpi.first.team811.Team811Robot;
 import edu.wpi.first.team811.subsystems.*;
+import edu.wpi.first.wpilibj.Dashboard;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Watchdog;
 
 /**
  *
@@ -34,13 +37,15 @@ public class OperatorControl extends Mode {
         gatherer = new Gathering(tr);
         feeder = new Feeder(tr);
         shooter = new Shooter(tr);
+        
+        w = tr.getWatchdog();
     }
     
     /**  
      * Runs once when operator control is enabled
      */
     public void init() {
-        d.shooterEncoder.start();
+        //d.shooterEncoder.start();
         shooter.enabled();
     }
     
@@ -48,6 +53,8 @@ public class OperatorControl extends Mode {
      * Runs continuously while operator control is enabled
      */
     public void execute() {
+        ds.waitForData();
+        w.feed();
         bridgeArm.execute(null);
         drivetrain.execute(null);
         feeder.execute(null);
@@ -78,7 +85,7 @@ public class OperatorControl extends Mode {
      */
     public void disable() {
         shooter.disabled();
-        d.shooterEncoder.stop();
+        //d.shooterEncoder.stop();
     }
     
     SubSystem bridgeArm;
@@ -86,4 +93,7 @@ public class OperatorControl extends Mode {
     SubSystem feeder;
     SubSystem gatherer;
     SubSystem shooter;
+    
+    DriverStation ds = DriverStation.getInstance();
+    Watchdog w;
 }
