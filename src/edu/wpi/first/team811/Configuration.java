@@ -39,9 +39,12 @@ public class Configuration {
     //public double[] speedsNew = {.55, .85, .7};///raw motor speeds - DO NOT USE
     //public double[] speedsMed = {.6 , .9 , 1 };///raw motor speeds - DO NOT USE
     //public double[] speedsOld = {.6 , 1  , 1 };///raw motor speeds - DO NOT USE
-    public double[] espeedNew = {34 , 36 , 37, 42, 43, 44, 46, 54, 56};///encoder speeds
-    public double[] espeedMed = {33 , 37 , 38, 43, 44, 45, 47, 55, 57};///encoder speeds
-    public double[] espeedOld = {33 , 37 , 38, 43, 44, 45, 47, 56, 58};///encoder speeds
+    //public double[] espeedNew = {34 , 36 , 37, 42, 43, 44, 46, 54, 56};///encoder speeds
+    //public double[] espeedMed = {33 , 37 , 38, 43, 44, 45, 47, 55, 57};///encoder speeds
+    //public double[] espeedOld = {33 , 37 , 38, 43, 44, 45, 47, 56, 58};///encoder speeds
+    public double[] espeedNew = {34 , 36 , 37, 42, 43, 44, 48, 56, 58};///encoder speeds
+    public double[] espeedMed = {33 , 37 , 38, 43, 44, 45, 49, 57, 59};///encoder speeds
+    public double[] espeedOld = {33 , 37 , 38, 43, 44, 45, 49, 58, 60};///encoder speeds
     ///Shooter PID Constants
     public static double pidP = .0002;///
     public static double pidI = .0002;///
@@ -53,5 +56,6 @@ public class Configuration {
     public double robotDriveExpire = 5;///Time (seconds?) before the Robot Drive Device complains about the output not being updated Used By:Drive Train
     public boolean hybridOn = false;///
     public String SDautoMode = "Autonomous Mode";//SmartDashboard autonomous mode key
-    public int autoDTMoveTime = 3500;
+    public int autoDTMoveTime = 3600;//3500;
+    public double shooterOffset = 3;///
 }

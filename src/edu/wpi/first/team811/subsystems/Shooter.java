@@ -39,7 +39,7 @@ public class Shooter extends SubSystem {
     }
 
     public final void reset() {
-        SmartDashboard.putString("Ball State", "Old");
+        SmartDashboard.putString("Ball State", "New");
         SmartDashboard.putBoolean("PID on target", false);
         SmartDashboard.putBoolean("Manual Mode", false);
         SmartDashboard.putDouble("Shooter At RPS:", 0.0);
@@ -52,7 +52,7 @@ public class Shooter extends SubSystem {
         rectH = 0;
         xOff = 0;
         speed = 0.0;
-        ballState = 0;
+        ballState = 2;
 
         d.shooterEncoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kRate);
         d.shooterEncoder.setDistancePerPulse(.004);
@@ -108,29 +108,30 @@ public class Shooter extends SubSystem {
         if (d.joy2.getRawButton(c.autoTurret)) {
             vision();
             return;
+        } else if (d.joy2.getRawButton(10)) {
+            manualTurret();
         } else {
             d.turret.set(0);
-            manualTurret();
         }
 
         //if (d.joy2.getRawAxis(c.shoot) == 1) {
-            if (manualOn) {
-                manualShooting();
-            } 
-           if (d.joy2.getRawAxis(c.shoot) == 1 && !manualOn) {
+        if (manualOn) {
+            manualShooting();
+        }
+        if (d.joy2.getRawAxis(c.shoot) == 1 && !manualOn) {
 
-                vision();
+            vision();
 
-                autoStartShooter();
+            autoStartShooter();
 
 //                while (d.joy2.getRawAxis(c.shoot) == 1) {
 //                    ds.waitForData();
 //                    w.feed();
 //                }
-                new stopload().run();
-                new shoot(0).run();
-            }
-       // }
+            new stopload().run();
+            new shoot(0).run();
+        }
+        // }
         if (!manualOn) {
             checkBallState();
         }
@@ -146,17 +147,17 @@ public class Shooter extends SubSystem {
             timer = new Timer();
 
             defaultSpeed = 57;
-            
+
             double initTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
-            while (vision() && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 2) {// for 2 seconds adjust shooter
-                faw();
-            }
+            //while (vision() && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 2) {// for 2 seconds adjust shooter
+            //    faw();
+            //}
 
             //Shoot 2 balls
             wheelPID.enable();
             debug("Starting PID");
-            wheelPID.setSetpoint(getSpeed());
-            while (edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 6) {
+            wheelPID.setSetpoint(-58);//getSpeed());
+            while (edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - initTime < 4) {//6) {
                 faw();
             }
             debug("setpoint: " + wheelPID.getSetpoint());
@@ -171,7 +172,7 @@ public class Shooter extends SubSystem {
             long timeOff = 3000;
 
             if (SmartDashboard.getInt(c.SDautoMode, 0) == 0) {
-            //if(!d.switchP1.get()) {//inverted
+                //if(!d.switchP1.get()) {//inverted
                 //Move to the bridge
                 timer.schedule(new moveDrive(.6, 0), 3000);
                 timer.schedule(new moveDrive(0, 0), 3000 + c.autoDTMoveTime);
@@ -274,8 +275,8 @@ public class Shooter extends SubSystem {
     //</editor-fold>
     public double getSpeed() {//Encoder based
         double mspeed = defaultSpeed;
-        
-        
+
+
         double speeds[];
 
         switch (ballState) {
@@ -299,7 +300,7 @@ public class Shooter extends SubSystem {
             }
         }
         SmartDashboard.putDouble("Shooter At RPS:", mspeed);
-        return mspeed * -1;
+        return (mspeed+c.shooterOffset) * -1;
     }
 
     public void autoStartShooter() {//Starts the shooter based on rectangle input
@@ -349,6 +350,8 @@ public class Shooter extends SubSystem {
         boolean limitSwitch = !d.turretLimit.get();
         SmartDashboard.putBoolean("Turret Limit Switch:", limitSwitch);
 
+        double tspeed = d.joy2.getRawAxis(4);
+
         //if (limitSwitch && !turretTimerHit) {
         //    timer.schedule(new TimerTask() {
 
@@ -357,10 +360,14 @@ public class Shooter extends SubSystem {
         //        }
         //    }, 2000);
         //} else 
-        if (Math.abs(d.joy2.getRawAxis(4)) < .2) {
+        //if (Math.abs(d.joy2.getRawAxis(4)) < .2) {
+        //    d.turret.set(0);
+        //} else {
+        d.turret.set(tspeed * (slowTurret ? .5 : .8));
+        //}
+        System.out.println(tspeed);
+        if (tspeed == -0.140625) {
             d.turret.set(0);
-        } else {
-            d.turret.set(d.joy2.getRawAxis(4) * (slowTurret ? .5 : .8));
         }
 
         //if (!limitSwitch) {
@@ -427,9 +434,11 @@ public class Shooter extends SubSystem {
 
     public void centerTurret(double xOffset) {
         debug("xOff: " + xOffset);
-        
+
         if (!d.turretLimit.get()) {
             d.turret.set(0);
+        } else if (Math.abs(xOffset) < 5) {
+            d.turret.set((xOffset / 100));
         } else if (Math.abs(xOffset) < 20) {
             d.turret.set(.7 * (xOffset / 100));
         } else if (Math.abs(xOffset) <= 50 && Math.abs(xOffset) >= 20) {
@@ -441,7 +450,7 @@ public class Shooter extends SubSystem {
         }
 
     }
-    
+
     public void faw() {//Feed and Wait
         ds.waitForData();
         w.feed();
