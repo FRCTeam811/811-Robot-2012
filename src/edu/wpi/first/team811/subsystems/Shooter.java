@@ -26,7 +26,7 @@ public class Shooter extends SubSystem {
     double xOff = 0;
     double speed = 0.0;//for shooter
     int ballState = 0;//0-old, 1-medium, 2-new
-    int defaultSpeed = 34;
+    int defaultSpeed = 31;
     PIDController wheelPID = null;
     Timer timer = null;
     DriverStation ds = DriverStation.getInstance();
@@ -248,6 +248,7 @@ public class Shooter extends SubSystem {
                 SmartDashboard.putBoolean("PID on target", onTargetLastState);
             }
             d.rd1.arcadeDrive(d.joy1.getRawAxis(2), d.joy1.getRawAxis(4));
+            if (d.joy2.getRawButton(10)) manualTurret();
         }
 
         debug("setpoint: " + wheelPID.getSetpoint());
